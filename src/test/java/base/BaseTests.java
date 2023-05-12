@@ -3,6 +3,7 @@ package base;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
@@ -24,15 +25,16 @@ public class BaseTests {
     @BeforeClass
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "resources/chromedriver");
-        driver = new EventFiringWebDriver(new ChromeDriver());
+        driver = new EventFiringWebDriver(new ChromeDriver(getChromeOptions()));
         driver.register(new EventReporter());
         goHome();
-        homePage = new HomePage(driver);
+        setCookie();
     }
 
     @BeforeMethod
     public void goHome() {
         driver.get("https://the-internet.herokuapp.com/");
+        homePage = new HomePage(driver);
     }
 
     @AfterClass
@@ -57,5 +59,19 @@ public class BaseTests {
 
     public WindowManager getWindowManager() {
         return new WindowManager(driver);
+    }
+
+    private ChromeOptions getChromeOptions() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("disable-infobars");
+        // options.setHeadless(true); // without opening browser
+        return options;
+    }
+
+    private void setCookie(){
+        var cookie = new org.openqa.selenium.Cookie.Builder("tau", "123")
+                .domain("the-internet.herokuapp.com")
+                .build();
+        driver.manage().addCookie(cookie);
     }
 }

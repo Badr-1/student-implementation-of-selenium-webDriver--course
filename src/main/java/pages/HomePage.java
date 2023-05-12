@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import utils.CookieManager;
 
 public class HomePage {
     private WebDriver driver;
@@ -72,5 +73,9 @@ public class HomePage {
 
     private void clickLink(String linkText) {
         driver.findElement(By.linkText(linkText)).click();
+    }
+
+    public CookieManager getCookieManager() {
+        return new CookieManager(driver);
     }
 }
