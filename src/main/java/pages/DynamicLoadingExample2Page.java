@@ -28,4 +28,7 @@ public class DynamicLoadingExample2Page {
                 .ignoring(NoSuchElementException.class);
         wait.until(ExpectedConditions.invisibilityOf(driver.findElement(loadingIndicator)));*/
     }
+    public boolean isStartButtonDisplayed(){
+        return driver.findElement(startButton).isDisplayed();
+    }
 }
